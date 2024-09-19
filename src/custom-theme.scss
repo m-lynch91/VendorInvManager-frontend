@@ -3,8 +3,8 @@
 
 // Angular material custom themese
 // see https://material.io/design/color/the-color-system.html#color-theme-creation
-$my-primary: mat.m2-define-palette(mat.$m2-green-palette, 700);
-$my-accent: mat.m2-define-palette(mat.$m2-yellow-palette, 600, A100, A400);
+$my-primary: mat.m2-define-palette(mat.$m2-yellow-palette, 900);
+$my-accent: mat.m2-define-palette(mat.$m2-green-palette, 600, A100, A400);
 $my-theme: mat.m2-define-light-theme(
   (
     color: (

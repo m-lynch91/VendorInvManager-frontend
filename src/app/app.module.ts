@@ -10,17 +10,21 @@ import { MatComponentsModule } from './mat-components/mat-components.module';
 
 // components
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { VendorModule } from './vendor/vendor.module';
 
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		HomeComponent
 	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,
-		MatComponentsModule
+		MatComponentsModule,
+		VendorModule
 	],
 	providers: [
 		provideClientHydration(),
