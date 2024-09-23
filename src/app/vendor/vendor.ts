@@ -4,7 +4,7 @@ export interface Vendor {
 	address: string;
 	city: string;
 	province: string;
-	postalcode: string;
+	postalCode: string;
     phone: string;
     type: string;
     email: string;

@@ -1,12 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Vendor } from '../vendor';
 
 @Component({
 	selector: 'app-vendor-list',
 	template: `
-	<mat-list-item 
-		*ngFor="let vendor of vendors"
-		>
+	<mat-list-item *ngFor="let vendor of vendors" (click)="onVendorSelected.emit(vendor)">
 		{{ vendor.id }} - {{ vendor.name }}
 	</mat-list-item>
 	`,
@@ -15,5 +13,6 @@ import { Vendor } from '../vendor';
 
 export class VendorListComponent {
 	@Input() vendors?: Vendor[];
+	@Output() onVendorSelected = new EventEmitter();
 
 }

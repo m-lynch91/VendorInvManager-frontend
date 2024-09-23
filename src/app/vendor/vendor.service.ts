@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { BASE_URL } from '../constants';
+import { BASE_URL, API_GET, API_UPDATE } from '../constants';
+import { Vendor } from './vendor'
 
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators'
@@ -11,14 +12,15 @@ import { retry, catchError } from 'rxjs/operators'
 })
 
 export class VendorService {
-	resourceURL: string;
-
 	constructor(public http: HttpClient) {
-		this.resourceURL = `${BASE_URL}/vendors`;
 	}
 
-	get(): Observable<any> {
-		return this.http.get(this.resourceURL).pipe(retry(1), catchError(this.handleError));
+	get(): Observable<Vendor[]> {
+		return this.http.get<Vendor[]>(API_GET).pipe(retry(1), catchError(this.handleError));
+	}
+
+	update(vendor: Vendor) {
+		return this.http.put<Vendor>(API_UPDATE, vendor).pipe(retry(1), catchError(this.handleError));
 	}
 
 	// error handling
