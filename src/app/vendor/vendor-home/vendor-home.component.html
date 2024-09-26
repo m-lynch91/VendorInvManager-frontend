@@ -6,12 +6,18 @@
     </mat-card-header>
     <mat-card-content>
         <app-vendor-detail [selectedVendor]="vendorInDetail" 
-        (cancelled)="cancel()" 
-        (saved)="update($event)"
-        (deleted)="delete($event)"
+        (cancelled)="onCancel()" 
+        (saved)="onSave($event)"
+        (deleted)="onDelete($event)"
         ></app-vendor-detail>
     </mat-card-content>
 </mat-card>
+
+<div class="pad5" *ngIf="!inDetail"></div>
+    <mat-icon (click)="newVendorInDetail()" matTooltip="Add New Vendor" class="addicon" color="primary">
+        control_point
+    </mat-icon>
+</div>
 
 <mat-card *ngIf="!inDetail">
         <mat-card-content *ngIf="vendorData$ | async as vends; else loading">
@@ -21,7 +27,7 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-list flex>
-                <app-vendor-list [vendors]="vends" (onVendorSelected)="select($event)"></app-vendor-list>
+                <app-vendor-list [vendors]="vends" (onVendorSelected)="onSelect($event)"></app-vendor-list>
             </mat-list>
         </mat-card-content>
         <ng-template #loading>Loading Vendors from server...</ng-template>

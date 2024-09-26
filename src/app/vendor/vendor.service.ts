@@ -24,7 +24,7 @@ export class VendorService {
 	}
 
 	add(vendor: Vendor): Observable<Vendor> {
-		return this.http.post<Vendor>(API_ADD + vendor.id, vendor).pipe(retry(1), catchError(this.handleError));
+		return this.http.post<Vendor>(API_ADD, vendor).pipe(retry(1), catchError(this.handleError));
 	}
 
 	delete(id: number): Observable<number> {

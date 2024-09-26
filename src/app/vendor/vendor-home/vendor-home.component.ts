@@ -13,9 +13,9 @@ import { Observable } from 'rxjs';
 	styles: ``
 })
 
-export class VendorHomeComponent implements OnInit{
+export class VendorHomeComponent implements OnInit {
 	msg: string = '';
-	
+
 	vendorData$?: Observable<Vendor[]>;
 	vendorInDetail: Vendor;
 	inDetail: boolean;
@@ -33,24 +33,52 @@ export class VendorHomeComponent implements OnInit{
 		this.vendorData$ = this.vendorService.get();
 	}
 
-	select(vendor: Vendor): void {
+	onSelect(vendor: Vendor): void {
 		this.vendorInDetail = vendor;
 		this.msg = `${vendor.name} selected`;
-		this.inDetail = false;
+		this.inDetail = true;
 	}
 
 	// event handler for cancel button
-	cancel(): void {
+	onCancel(): void {
 		this.msg = 'Operation cancelled';
 		this.inDetail = false;
+	}
+
+	// send vendor to service for deletion
+	onDelete(vendor: Vendor): void {
+		this.vendorService.delete(vendor.id).subscribe({
+			next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1
+				? (this.msg = `Vendor ${vendor.name} deleted.`)
+				: (this.msg = `Vendor not deleted.`),
+			error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
+			complete: () => this.inDetail = false,
+		});
+	}
+
+	// save - determine whether we're doing an add or an update
+	onSave(vendor: Vendor): void {
+		vendor.id ? this.update(vendor) : this.add(vendor);
+	}
+
+
+	// add - send vendor to service, receive new vendor back
+	add(vendor: Vendor): void {
+		this.vendorService.add(vendor).subscribe({
+			next: (newVendor: Vendor) => {
+				this.msg = `Vendor ${newVendor.id} added.`;
+			},
+			error: (err: Error) => { this.msg = `Vendor not added: ${err.message}` },
+			complete: () => this.inDetail = false,
+		});
 	}
 
 	// send changed update to service
 	update(vendor: Vendor): void {
 		this.vendorService.update(vendor).subscribe({
-			
+
 			// create observable
-			next: (vend: Vendor) => (this.msg = `Vendor ${vend.id} updated!`),
+			next: (updatedVendor: Vendor) => (this.msg = `Vendor ${updatedVendor.id} updated.`),
 			error: (err: Error) => (this.msg = `Update failed. - ${err.message}`),
 			complete: () => (this.inDetail = false),
 		})
@@ -58,11 +86,16 @@ export class VendorHomeComponent implements OnInit{
 
 	delete(vendor: Vendor): void {
 		this.vendorService.delete(vendor.id).subscribe({
-			next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1 
-			? (this.msg = `Vendor: ${vendor.name} deleted.`)
-			: (this.msg = `Vendor not deleted.`),
+			next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1
+				? (this.msg = `Vendor: ${vendor.name} deleted.`)
+				: (this.msg = `Vendor not deleted.`),
 			error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
 			complete: () => this.inDetail = false,
 		});
+	}
+
+	newVendorInDetail(): void {
+		this.vendorInDetail = VENDOR_DEFAULT;
+		this.msg = `New Vendor`;
 	}
 }

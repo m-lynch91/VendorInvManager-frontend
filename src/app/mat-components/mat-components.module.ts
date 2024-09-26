@@ -11,16 +11,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const MaterialComponents = [MatButtonModule,
-  MatCardModule,
-  MatMenuModule,
-  MatIconModule,
-  MatListModule,
-  MatToolbarModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule
+	MatCardModule,
+	MatMenuModule,
+	MatIconModule,
+	MatListModule,
+	MatToolbarModule,
+	MatFormFieldModule,
+	MatInputModule,
+	MatSelectModule,
+	MatTooltipModule,
+
 ];
 
 @NgModule({
