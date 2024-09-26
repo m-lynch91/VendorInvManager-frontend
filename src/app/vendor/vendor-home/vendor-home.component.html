@@ -5,7 +5,11 @@
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <app-vendor-detail [selectedVendor]="vendorInDetail" (cancelled)="cancel()" (saved)="update($event)"></app-vendor-detail>
+        <app-vendor-detail [selectedVendor]="vendorInDetail" 
+        (cancelled)="cancel()" 
+        (saved)="update($event)"
+        (deleted)="delete($event)"
+        ></app-vendor-detail>
     </mat-card-content>
 </mat-card>
 

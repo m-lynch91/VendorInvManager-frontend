@@ -18,6 +18,7 @@ export class VendorDetailComponent implements OnInit {
 
     @Output() cancelled = new EventEmitter;
     @Output() saved = new EventEmitter;
+    @Output() deleted = new EventEmitter;
 
     name: FormControl;
     address: FormControl;
@@ -75,6 +76,10 @@ export class VendorDetailComponent implements OnInit {
         this.selectedVendor.postalCode = this.vendorForm.value.postalCode;
         this.selectedVendor.email = this.vendorForm.value.email;
         this.saved.emit(this.selectedVendor);
+    }
+
+    deleteVendor(vendor: Vendor) {
+        this.deleted.emit(vendor);
     }
 
 }
