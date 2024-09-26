@@ -18,39 +18,31 @@ export class VendorHomeComponent implements OnInit{
 	
 	vendorData$?: Observable<Vendor[]>;
 	vendorInDetail: Vendor;
-	editing: boolean;
+	inDetail: boolean;
 	loaded: boolean;
 
 	constructor(public vendorService: VendorService) {
 		this.msg = '';
 		this.vendorInDetail = VENDOR_DEFAULT;
-		this.editing = false;
+		this.inDetail = false;
 		this.loaded = false;
 	}
 
 	ngOnInit(): void {
 		this.msg = "Loading...";
-
-		this.vendorData$ = this.vendorService.get().pipe(
-			tap(() => {
-				if (!this.loaded) {
-					this.msg = 'Vendors loaded via async pipe';
-					this.loaded = true;
-				}
-			})
-		)
+		this.vendorData$ = this.vendorService.get();
 	}
 
 	select(vendor: Vendor): void {
 		this.vendorInDetail = vendor;
 		this.msg = `${vendor.name} selected`;
-		this.editing = !this.editing;
+		this.inDetail = false;
 	}
 
 	// event handler for cancel button
 	cancel(): void {
 		this.msg = 'Operation cancelled';
-		this.editing = !this.editing;
+		this.inDetail = false;
 	}
 
 	// send changed update to service
@@ -60,7 +52,7 @@ export class VendorHomeComponent implements OnInit{
 			// create observable
 			next: (vend: Vendor) => (this.msg = `Vendor ${vend.id} updated!`),
 			error: (err: Error) => (this.msg = `Update failed. - ${err.message}`),
-			complete: () => (this.editing = !this.editing),
+			complete: () => (this.inDetail = false),
 		})
 	}
 
@@ -70,7 +62,7 @@ export class VendorHomeComponent implements OnInit{
 			? (this.msg = `Vendor: ${vendor.name} deleted.`)
 			: (this.msg = `Vendor not deleted.`),
 			error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
-			complete: () => this.editing = false,
+			complete: () => this.inDetail = false,
 		});
 	}
 }

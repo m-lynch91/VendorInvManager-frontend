@@ -1,4 +1,4 @@
-<mat-card *ngIf="editing">
+<mat-card *ngIf="inDetail">
     <mat-card-header>
         <mat-card-title>
             <span class="my-primary-text">{{ msg }}</span>
@@ -13,7 +13,7 @@
     </mat-card-content>
 </mat-card>
 
-<mat-card *ngIf="!editing">
+<mat-card *ngIf="!inDetail">
         <mat-card-content *ngIf="vendorData$ | async as vends; else loading">
             <mat-card-header class="app-accent" layout="row">
                 <mat-card-title>
