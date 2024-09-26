@@ -13,11 +13,12 @@
     </mat-card-content>
 </mat-card>
 
-<div class="pad5" *ngIf="!inDetail"></div>
+<div class="pad5" *ngIf="!inDetail">
     <mat-icon (click)="newVendorInDetail()" matTooltip="Add New Vendor" class="addicon" color="primary">
         control_point
     </mat-icon>
 </div>
+
 
 <mat-card *ngIf="!inDetail">
         <mat-card-content *ngIf="vendorData$ | async as vends; else loading">
@@ -31,5 +32,5 @@
             </mat-list>
         </mat-card-content>
         <ng-template #loading>Loading Vendors from server...</ng-template>
-
 </mat-card>
+

@@ -96,6 +96,7 @@ export class VendorHomeComponent implements OnInit {
 
 	newVendorInDetail(): void {
 		this.vendorInDetail = VENDOR_DEFAULT;
+		this.inDetail = true;
 		this.msg = `New Vendor`;
 	}
 }
