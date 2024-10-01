@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Vendor } from '../vendor';
-import { VendorService } from '../vendor.service';
-import { VENDOR_DEFAULT } from '../../constants';
+import { Vendor } from '@app/vendor/vendor';
+import { VendorService } from '@app/vendor/vendor.service';
+import { VENDOR_DEFAULT } from '@app/constants';
 
 import { tap, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -30,7 +30,7 @@ export class VendorHomeComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.msg = "Loading...";
-		this.vendorData$ = this.vendorService.get();
+		this.getAll();
 	}
 
 	onSelect(vendor: Vendor): void {
@@ -58,13 +58,13 @@ export class VendorHomeComponent implements OnInit {
 
 	// save - determine whether we're doing an add or an update
 	onSave(vendor: Vendor): void {
-		vendor.id ? this.update(vendor) : this.add(vendor);
+		vendor.id ? this.update(vendor) : this.create(vendor);
 	}
 
 
 	// add - send vendor to service, receive new vendor back
-	add(vendor: Vendor): void {
-		this.vendorService.add(vendor).subscribe({
+	create(vendor: Vendor): void {
+		this.vendorService.create(vendor).subscribe({
 			next: (newVendor: Vendor) => {
 				this.msg = `Vendor ${newVendor.id} added.`;
 			},
@@ -98,5 +98,13 @@ export class VendorHomeComponent implements OnInit {
 		this.vendorInDetail = VENDOR_DEFAULT;
 		this.inDetail = true;
 		this.msg = `New Vendor`;
+	}
+
+	getAll(): void {
+		this.vendorData$ = this.vendorService.getAll();
+		this.vendorData$.subscribe({
+			error: (e: Error) => this.msg = `Couldn't get vendors: ${e.message}`,
+			complete: () => this.msg = `Vendors loaded!`,
+		})
 	}
 }

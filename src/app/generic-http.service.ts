@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ObservableInput, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs';
-import { API_GET, BASE_URL } from './constants';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
+import { BASE_URL } from '@app/constants';
 
 @Injectable({
   providedIn: 'root',

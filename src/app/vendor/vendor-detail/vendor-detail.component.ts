@@ -6,10 +6,10 @@ import {
  Validators
 } from '@angular/forms';
 
-import { Vendor } from '../vendor';
-import { VENDOR_DEFAULT } from '../../constants';
-import { ValidatePhone } from '../validators/phonenumber.validator';
-import { ValidatePostalCode } from '../validators/postalcode.validator';
+import { Vendor } from '@app/vendor/vendor';
+import { VENDOR_DEFAULT } from '@app/constants';
+import { ValidatePhone,  } from '@app/validators/phonenumber.validator';
+import { ValidatePostalCode } from '@app/validators/postalcode.validator';
 
 @Component({
     selector: 'app-vendor-detail',
