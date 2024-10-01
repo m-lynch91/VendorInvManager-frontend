@@ -26,18 +26,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .padtop15 {
 	padding-top: 15vh;
-	} 
+} 
 
 mat-list-item:nth-child(odd){
 	background-color:white;
- }
- mat-list-item:nth-child(even) {
+}
+
+mat-list-item:nth-child(even) {
 	background-color:#eeeeee;
- }
- .material-icons.addicon {
-	font-size: 15vw;
+}
+
+mat-error { 
+	text-align: right,
+}
+
+.material-icons.addicon {
+	transform: scale(3);
 	position: absolute;
-	bottom: 5vh;
-	right: 5vw;
-	padding: 10vw;
+	bottom: 10vh;
+	right: 15vw;
+}
+
+@media(min-width: 401px) {
+	.material-icons.addicon {
+		transform: scale(3);
+		position: absolute;
+		bottom: 10vh;
+		right: 15vw;
+	}
 }
