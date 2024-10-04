@@ -12,6 +12,12 @@ import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAccordion } from '@angular/material/expansion';
 
 const MaterialComponents = [MatButtonModule,
 	MatCardModule,
@@ -23,7 +29,12 @@ const MaterialComponents = [MatButtonModule,
 	MatInputModule,
 	MatSelectModule,
 	MatTooltipModule,
-
+	MatTableModule,
+	MatSortModule,
+	MatDatepickerModule,
+	MatNativeDateModule,
+	MatExpansionModule,
+	MatAccordion
 ];
 
 @NgModule({

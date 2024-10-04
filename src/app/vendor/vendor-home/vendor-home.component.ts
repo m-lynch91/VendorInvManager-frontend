@@ -47,7 +47,7 @@ export class VendorHomeComponent implements OnInit {
 
 	// send vendor to service for deletion
 	onDelete(vendor: Vendor): void {
-		this.vendorService.delete(vendor.id).subscribe({
+		this.vendorService.delete(vendor.id.toString()).subscribe({
 			next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1
 				? (this.msg = `Vendor ${vendor.name} deleted.`)
 				: (this.msg = `Vendor not deleted.`),
@@ -84,15 +84,15 @@ export class VendorHomeComponent implements OnInit {
 		})
 	}
 
-	delete(vendor: Vendor): void {
-		this.vendorService.delete(vendor.id).subscribe({
-			next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1
-				? (this.msg = `Vendor: ${vendor.name} deleted.`)
-				: (this.msg = `Vendor not deleted.`),
-			error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
-			complete: () => this.inDetail = false,
-		});
-	}
+	// delete(vendor: Vendor): void {
+	// 	this.vendorService.delete(vendor.id.toString()).subscribe({
+	// 		next: (numberOfVendorsDeleted: number) => numberOfVendorsDeleted === 1
+	// 			? (this.msg = `Vendor: ${vendor.name} deleted.`)
+	// 			: (this.msg = `Vendor not deleted.`),
+	// 		error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
+	// 		complete: () => this.inDetail = false,
+	// 	});
+	// }
 
 	newVendorInDetail(): void {
 		this.vendorInDetail = VENDOR_DEFAULT;

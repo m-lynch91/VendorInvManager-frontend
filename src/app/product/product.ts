@@ -8,7 +8,7 @@ export interface Product {
     economicorderquantity: number;
     quantityonhand: number;
     quantityonorder: number;
-    qrcode: null;
+    qrcode: number[];
     qrcodetext: string;
    }
    

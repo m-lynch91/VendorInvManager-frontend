@@ -26,6 +26,6 @@ export const PRODUCT_DEFAULT = {
 	economicorderquantity: 0,
     quantityonhand: 0,
     quantityonorder: 0,
-    qrcode: null,
+    qrcode: [],
 	qrcodetext: '',
 }
