@@ -11,6 +11,7 @@
     <app-product-detail
       [selectedProduct]="productInDetail"
       [vendors]="vendorData"
+      [products]="dataSource.data"
       (cancelled)="onCancel()"
       (saved)="onSave($event)"
       (deleted)="onDelete($event)"

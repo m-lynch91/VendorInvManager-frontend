@@ -14,7 +14,7 @@
             formControlName="id"
           />
           <mat-error align="end">
-            <span *ngIf="id.hasError('required')">id is required</span>
+            <span *ngIf="id.hasError('required')">Id is required</span>
             <span *ngIf="!id.hasError('required') && id.hasError('idExists')">
               Id already exists
             </span>
@@ -52,7 +52,7 @@
 	  <div layout="row">
 		<mat-form-field flex style="width: 100%">
 			<mat-label>Name</mat-label>
-			<input matInput placeholder="Name" type="text" formControlName="name"/>
+			<input matInput placeholder="Name" type="text" formControlName="name" required/>
 			<mat-error *ngIf="name.errors && (name.dirty || name.touched)" align="end">
 				Name is required
 			</mat-error>

@@ -43,7 +43,7 @@ export class VendorDetailComponent implements OnInit {
         this.type = new FormControl('', Validators.compose([Validators.required]));
         this.email = new FormControl('', Validators.compose([Validators.required, Validators.email])); 
 
-        this.vendorForm = new FormGroup({
+        this.vendorForm = this.builder.group({
             name: this.name,
             address: this.address,
             city: this.city,

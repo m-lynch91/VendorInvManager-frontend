@@ -10,7 +10,7 @@ import { Product } from '@app/product/product';
 import { Vendor } from '@app/vendor/vendor';
 import { PRODUCT_DEFAULT } from '@app/constants';
 import { ValiateDecimal } from '@app/validators/decimal.validator';
-import { ValiateInt } from '@app/validators/int.validator';
+import { ValidateInt } from '@app/validators/int.validator';
 
 
 @Component({
@@ -39,8 +39,8 @@ export class ProductDetailComponent implements OnInit {
 	economicorderquantity: FormControl;
 	quantityonhand: FormControl;
 	quantityonorder: FormControl;
-	qrcode: FormControl;
-	qrcodetext: FormControl;
+	// qrcode: FormControl;
+	// qrcodetext: FormControl;
 
 	productForm: FormGroup;
 
@@ -50,12 +50,12 @@ export class ProductDetailComponent implements OnInit {
 		this.name = new FormControl('', Validators.compose([Validators.required]));
 		this.purchaseprice = new FormControl('', Validators.compose([Validators.required, ValiateDecimal]));
 		this.msrp = new FormControl('', Validators.compose([Validators.required, ValiateDecimal]));
-		this.reorderpoint = new FormControl('', Validators.compose([Validators.required, ValiateInt]));
-		this.economicorderquantity = new FormControl('', Validators.compose([Validators.required, ValiateInt]));
-		this.quantityonhand = new FormControl('', Validators.compose([Validators.required, ValiateInt]));
-		this.quantityonorder = new FormControl('', Validators.compose([Validators.required, ValiateInt]));
-		this.qrcode = new FormControl('', Validators.compose([Validators.required]));
-		this.qrcodetext = new FormControl('', Validators.compose([Validators.required]));
+		this.reorderpoint = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
+		this.economicorderquantity = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
+		this.quantityonhand = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
+		this.quantityonorder = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
+		// this.qrcode = new FormControl('', Validators.compose([Validators.required]));
+		// this.qrcodetext = new FormControl('', Validators.compose([Validators.required]));
 
 		this.productForm = this.builder.group({
 			id: this.id,
@@ -67,8 +67,8 @@ export class ProductDetailComponent implements OnInit {
 			economicorderquantity: this.economicorderquantity,
 			quantityonhand: this.quantityonhand,
 			quantityonorder: this.quantityonorder,
-			qrcode: this.qrcode,
-			qrcodetext: this.qrcodetext,
+			// qrcode: this.qrcode,
+			// qrcodetext: this.qrcodetext,
 		});
 	}
 
@@ -83,8 +83,8 @@ export class ProductDetailComponent implements OnInit {
 			economicorderquantity: this.selectedProduct.economicorderquantity,
 			quantityonhand: this.selectedProduct.quantityonhand,
 			quantityonorder: this.selectedProduct.quantityonorder,
-			qrcode: this.selectedProduct.qrcode,
-			qrcodetext: this.selectedProduct.qrcodetext,
+			// qrcode: this.selectedProduct.qrcode,
+			// qrcodetext: this.selectedProduct.qrcodetext,
 		});
 	}
 
@@ -98,8 +98,8 @@ export class ProductDetailComponent implements OnInit {
 		this.selectedProduct.economicorderquantity = this.productForm.value.economicorderquantity;
 		this.selectedProduct.quantityonhand = this.productForm.value.quantityonhand;
 		this.selectedProduct.quantityonorder = this.productForm.value.quantityonorder;
-		this.selectedProduct.qrcode = this.productForm.value.qrcode;
-		this.selectedProduct.qrcodetext = this.productForm.value.qrcodetext;
+		// this.selectedProduct.qrcode = this.productForm.value.qrcode;
+		// this.selectedProduct.qrcodetext = this.productForm.value.qrcodetext;
 		this.saved.emit(this.selectedProduct);
 	}
 
