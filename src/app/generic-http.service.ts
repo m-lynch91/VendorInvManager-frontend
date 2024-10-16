@@ -27,6 +27,13 @@ export class GenericHttpService<T> {
       .pipe(retry(1), catchError(this.handleError));
   }
 
+  getSome(id: number): Observable<T[]> {
+		const urlWithId = `${BASE_URL}/${this.endPoint}/${id}`;
+		return this.http
+			.get<T[]>(urlWithId)
+			.pipe(retry(1), catchError(this.handleError));
+	}
+
   create(data: T): Observable<T> {
     return this.http
       .post<T>(`${BASE_URL}/${this.endPoint}`, data)
