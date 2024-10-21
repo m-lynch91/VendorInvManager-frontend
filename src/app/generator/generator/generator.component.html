@@ -1,0 +1,160 @@
+<mat-card>
+    <mat-card-header layout="row">
+      <mat-card-title>
+        <span class="my-primary-text">{{ msg }}</span>
+      </mat-card-title>
+    </mat-card-header>
+  
+  
+  
+    <mat-card-content>
+      <form [formGroup]="generatorFormGroup" novalidate>
+        <div layout="row" style="margin-top: 3vh">
+          <mat-form-field flex style="width: 100%">
+            <mat-label>Vendor</mat-label>
+            <mat-select placeholder="Choose Vendor" formControlName="vendor">
+              <mat-option *ngFor="let vendor of vendorData" [value]="vendor">
+                {{ vendor.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+  
+        <div
+          *ngIf="unselectedVendorProducts().length > 0; else noProducts"
+          layout="row"
+        >
+          <mat-form-field flex style="width: 100%">
+            <mat-label>Product</mat-label>
+            <mat-select placeholder="Choose Product" formControlName="product">
+                <mat-option *ngFor="let product of vendorProductData" [value]="product">
+                    {{ product.name }}
+                  </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div
+        *ngIf="unselectedVendorProducts().length > 0; else noProducts"
+        layout="row"
+      >
+        <mat-form-field flex style="width: 100%">
+          <mat-label>Select Quantity</mat-label>
+          <mat-select placeholder="Select a Quantity" formControlName="quantity" >
+            <mat-option [value]="selectedEOQ">EOQ</mat-option>
+            <mat-option *ngFor="let quantity of quantityOptions" [value]="selectedQuantity">{{ quantity }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+        
+        <ng-template #noProducts>
+          <div
+            *ngIf="selectedVendor.id !== 0"
+            class="my-primary-text"
+          >
+            <div *ngIf="vendorProductData.length === 0; else allSelected">
+              No products for {{ selectedVendor.name }}
+            </div>
+            <ng-template #allSelected>
+              All products already selected
+            </ng-template>
+          </div>
+        </ng-template>
+  
+  
+        <br />
+  
+  
+        <div *ngIf="purchaseOrderItems.length > 0" class="row">
+          <table>
+            <tr>
+              <th
+                colspan="3"
+                class="pad-xs text-center md-subhead my-primary-text"
+                style="font-weight: bold; padding: 2vh"
+              >
+                Product Items for {{ selectedVendor.name }}
+              </th>
+            </tr>
+            <tr style="font-weight: bold; background-color: #eeeeee">
+              <td
+                style="
+                  text-align: center;
+                  width: 20vw;
+                  padding-top: 2vh;
+                  padding-bottom: 2vh;
+                "
+              >
+                Product
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  width: 60vw;
+                  padding-top: 2vh;
+                  padding-bottom: 2vh;
+                "
+              >
+                Quantity
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  width: 20vw;
+                  padding-top: 2vh;
+                  padding-bottom: 2vh;
+                "
+              >
+                Extended Price
+              </td>
+            </tr>
+            <tr *ngFor="let item of selectedProducts()">
+              <td class="text-left" style="padding-top: 1vh; padding-bottom: 1vh">
+                {{ item.name }}
+              </td>
+              <td
+                width="700"
+                class="text-left"
+                style="padding-top: 1vh; padding-bottom: 1vh"
+              >
+                {{ selectedQuantity }}
+              </td>
+              <td
+                style="padding-top: 1vh; padding-bottom: 1vh; text-align: right"
+              >
+                {{ item.msrp| currency : "USD" : "symbol" : "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align: right">Total:</td>
+              <td
+                class="my-accent-text"
+                style="font-weight: 600; text-align: right"
+              >
+                {{ total | currency : "USD" : "symbol" : "1.2-2" }}
+              </td>
+            </tr>
+          </table>
+        </div>
+  
+  
+        
+        <div style="text-align: center" *ngIf="purchaseOrderItems.length > 0">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="createReport()"
+            style="margin-top: 3vh"
+          >
+            Add Purchase Order
+          </button>
+        </div>
+  
+  
+      </form>
+  
+    </mat-card-content>
+  </mat-card>
+  
