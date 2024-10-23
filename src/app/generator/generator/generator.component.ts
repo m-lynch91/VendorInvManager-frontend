@@ -1,7 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 import { MatComponentsModule } from '@app/mat-components/mat-components.module';
 
@@ -11,176 +16,216 @@ import { VendorService } from '@app/vendor/vendor.service';
 import { Product } from '@app/product/product';
 import { ProductService } from '@app/product/product.service';
 
-import { PurchaseOrder } from '@app/purchaseOrder/purchase-order';
-import { PurchaseOrderService } from '@app/purchaseOrder/purchase-order.service';
-import { PurchaseOrderItem } from '@app/purchaseOrder/purchase-order-item';
+import { PurchaseOrder } from '@app/purchase-order/purchase-order';
+import { PurchaseOrderService } from '@app/purchase-order/purchase-order.service';
+import { PurchaseOrderLineItem } from '@app/purchase-order/purchase-order-line-item';
 
-import { VENDOR_DEFAULT } from '@app/constants';
+import { PRODUCT_DEFAULT, VENDOR_DEFAULT } from '@app/constants';
 
 @Component({
-	selector: 'app-generator',
-	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, MatComponentsModule],
-	templateUrl: './generator.component.html',
-	styles: ``
+  selector: 'app-generator',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatComponentsModule],
+  templateUrl: './generator.component.html',
+  styles: ``,
 })
-
 export class GeneratorComponent implements OnInit, OnDestroy {
-	// prevent memory leaks
-	formSubscription?: Subscription;
+  // prevent memory leaks
+  formSubscription?: Subscription;
 
+  msg: string = '';
+  vendorData: Vendor[] = [];
+  selectedVendor: Vendor = VENDOR_DEFAULT;
+  vendorProductData: Product[] = [];
+  selectedProduct: Product = PRODUCT_DEFAULT;
 
-	msg: string = '';
-	vendorData: Vendor[] = [];
-	selectedVendor: Vendor = VENDOR_DEFAULT;
-	vendorProductData: Product[] = [];
-	purchaseOrderItems: PurchaseOrderItem[] = [];
-	total: number = 0;
-	quantityOptions: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-	selectedQuantity: number = 1;
-	selectedEOQ: string = '';
+  purchaseOrderLineItems: PurchaseOrderLineItem[] = [];
+  selectedQuantity: number = 1;
 
+  vendorForm: FormControl;
+  productForm: FormControl;
+  quantityForm: FormControl;
+  generatorFormGroup: FormGroup;
 
-	vendorForm: FormControl;
-	productForm: FormControl;
-	quantityForm: FormControl;
-	generatorFormGroup: FormGroup;
+  constructor(
+    private builder: FormBuilder,
+    private vendorService: VendorService,
+    private productService: ProductService,
+    private purchaseOrderService: PurchaseOrderService
+  ) {
+    this.vendorForm = new FormControl('');
+    this.productForm = new FormControl('');
+    this.quantityForm = new FormControl('');
+    this.generatorFormGroup = this.builder.group({
+      vendor: this.vendorForm,
+      product: this.productForm,
+      quantity: this.quantityForm,
+    });
+  }
 
-	constructor(
-		private builder: FormBuilder,
-		private vendorService: VendorService,
-		private productService: ProductService,
-		private purchaseOrderService: PurchaseOrderService
-	) {
-		this.vendorForm = new FormControl('');
-		this.productForm = new FormControl('');
-		this.quantityForm = new FormControl('');
-		this.generatorFormGroup = this.builder.group({
-			vendor: this.vendorForm,
-			product: this.productForm,
-			quantity: this.quantityForm
-		});
-	}
+  ngOnInit(): void {
+    this.msg = 'Loading vendor data from server.';
+    this.setupOnVendorPickedEvent();
+    this.setupOnProductPickedEvent();
+    this.setupOnQuantityPickedEvent();
+    this.getVendorData();
+  }
 
-	ngOnInit(): void {
-		this.msg = 'Loading vendor data from server.';
-		this.setupOnVendorPickedEvent();
-		this.setupOnProductPickedEvent();
-		this.getVendorData();
-	}
+  ngOnDestroy(): void {
+    if (this.formSubscription !== undefined) {
+      this.formSubscription.unsubscribe();
+    }
+  }
 
-	ngOnDestroy(): void {
-		if (this.formSubscription !== undefined) {
-			this.formSubscription.unsubscribe();
-		}
-	}
+  setupOnVendorPickedEvent(): void {
+    this.formSubscription = this.generatorFormGroup
+      .get('vendor')
+      ?.valueChanges.subscribe((vendor) => {
+        if (vendor === null) return;
+        this.selectedVendor = vendor;
+        this.loadVendorProducts();
+        this.purchaseOrderLineItems = [];
+        this.selectedProduct = Object.assign({}, PRODUCT_DEFAULT);
+        this.selectedQuantity = 1;
+        this.productForm.reset();
+        this.quantityForm.reset();
+        this.msg = `Choose product for vendor`;
+      });
+  }
 
-	setupOnVendorPickedEvent(): void {
-		this.formSubscription = this.generatorFormGroup.get('vendor')?.valueChanges.subscribe(vendor => {
-			if (!vendor) return;
-			this.selectedVendor = vendor;
-			this.loadVendorProducts();
-			this.purchaseOrderItems = [];
-			this.msg = `Choose product for vendor`;
-		});
-	}
+  setupOnProductPickedEvent(): void {
+    const productSubscription = this.generatorFormGroup
+      .get('product')
+      ?.valueChanges.subscribe((product) => {
+        if (product === null) return;
 
-	setupOnProductPickedEvent(): void {
-		const productSubscription = this.generatorFormGroup.get('product')?.valueChanges.subscribe(product => {
-			if (!product) return;
+        this.selectedProduct = product;
+      });
 
-			const item: PurchaseOrderItem = {
-				id: 0,
-				purchaseorderid: 0,
-				productid: product.id,
-				quantity: 0,
-				price: 0
-			};
+    this.formSubscription?.add(productSubscription);
+  }
 
-			if (!this.isProductAlreadySelected(product)) {
-				this.purchaseOrderItems.push(item);
-				this.total += product.amount;
-			}
-		});
+  setupOnQuantityPickedEvent(): void {
+    const quantitySubscription = this.generatorFormGroup
+      .get('quantity')
+      ?.valueChanges.subscribe((quantity) => {
+        if (quantity === null) return;
 
-		this.formSubscription?.add(productSubscription);
-	}
+        this.selectedQuantity = quantity;
 
-	getVendorData(verbose: boolean = true): void {
-		this.vendorService.getAll().subscribe({
-			next: (vendors: Vendor[]) => this.vendorData = vendors,
-			error: (e: Error) => this.msg = `Failed to load vendor data: ${e.message}`,
-			complete: () => verbose ? this.msg = `Vendor data loaded.` : null,
-		})
-	}
+        if (this.isProductAlreadySelected(this.selectedProduct.id)) {
+          let purchaseOrderItem = this.getPurchaseOrderItem(
+            this.selectedProduct.id
+          );
 
-	loadVendorProducts(): void {
-		this.vendorProductData = [];
-		this.productService.getSome(this.selectedVendor.id).subscribe({
-			next: (products: Product[]) => this.vendorProductData = products,
-			error: (e: Error) => this.msg = `Failed to load vendor products: ${e.message}`,
-		});
-	}
+          if (purchaseOrderItem) {
+            purchaseOrderItem.quantity = quantity;
 
-	getProduct(productid: string): Product | undefined {
-		return this.vendorProductData.find(e => e.id === productid);
-	}
+            this.calculateTotal();
+          }
+        } else {
+          const item: PurchaseOrderLineItem = {
+            id: 0,
+            purchaseorderid: 0,
+            productid: this.selectedProduct.id,
+            quantity: quantity,
+            price: this.selectedProduct.purchaseprice,
+          };
 
-	selectedProducts(): Product[] {
-		let products: Product[] = [];
-		this.purchaseOrderItems.forEach(item => {
-			let product = this.getProduct(item.productid);
-			if (product) {
-				products.push(product);
-			}
-		});
+          this.purchaseOrderLineItems.push(item);
+        }
 
-		return products;
-	}
+        // remove items with 0 quantity
+        this.purchaseOrderLineItems = this.purchaseOrderLineItems.filter(
+          (item) => item.quantity > 0
+        );
+      });
 
+    this.formSubscription?.add(quantitySubscription);
+  }
 
-	isProductAlreadySelected(product: Product): boolean {
-		return this.purchaseOrderItems.find(item => item.productid === product.id) !== undefined;
-	}
+  getVendorData(verbose: boolean = true): void {
+    this.vendorService.getAll().subscribe({
+      next: (vendors: Vendor[]) => (this.vendorData = vendors),
+      error: (e: Error) =>
+        (this.msg = `Failed to load vendor data: ${e.message}`),
+      complete: () => (verbose ? (this.msg = `Vendor data loaded.`) : null),
+    });
+  }
 
-	unselectedVendorProducts(): Product[] {
-		const products = this.vendorProductData.filter(e => !this.isProductAlreadySelected(e));
-		return products;
-	}
+  loadVendorProducts(): void {
+    this.vendorProductData = [];
+    this.productService.getSome(this.selectedVendor.id).subscribe({
+      next: (products: Product[]) => (this.vendorProductData = products),
+      error: (e: Error) =>
+        (this.msg = `Failed to load vendor products: ${e.message}`),
+    });
+  }
 
-	createReport(): void {
-		const purchaseOrder: PurchaseOrder = {
-			id: 0,
-			vendorid: this.selectedVendor.id,
-			date: new Date(),
-			amount: this.total,
-			purchaseOrderItems: this.purchaseOrderItems
-		};
+  getPurchaseOrderItem(productid: string): PurchaseOrderLineItem | undefined {
+    return this.purchaseOrderLineItems.find((e) => e.productid === productid);
+  }
 
-		this.purchaseOrderService.create(purchaseOrder).subscribe({
-			next: (purchaseOrder: PurchaseOrder) => {
-				purchaseOrder.id > 0
-					? this.msg = `Purchase order ${purchaseOrder.id} created.`
-					: this.msg = `Failed to create purchase order (server error).`;
+  calculateSubTotal(): number {
+    return this.purchaseOrderLineItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+  }
 
-				console.log(purchaseOrder);
-				console.log(this.msg);
-			},
-			error: (e: Error) => this.msg = `Failed to create purchase order: ${e.message}`,
-			complete: () => this.resetGenerator(),
-		});
-	}
+  calculateTax(): number {
+    const TAX_RATE = 0.13;
+    return this.calculateSubTotal() * TAX_RATE;
+  }
 
-	resetGenerator(): void {
-		this.vendorForm.reset();
-		this.productForm.reset();
-		this.quantityForm.reset();
-		this.selectedVendor = Object.assign({}, VENDOR_DEFAULT);
-		this.vendorProductData = [];
-		this.purchaseOrderItems = [];
-		this.total = 0;
-		this.selectedQuantity = 1;
-	}
+  calculateTotal(): number {
+    return this.calculateSubTotal() + this.calculateTax();
+  }
 
+  isProductAlreadySelected(productid: string): boolean {
+    return (
+      this.purchaseOrderLineItems.find(
+        (item) => item.productid === productid
+      ) !== undefined
+    );
+  }
 
+  unselectedVendorProducts(): Product[] {
+    const products = this.vendorProductData.filter(
+      (e) => !this.isProductAlreadySelected(e.id)
+    );
+    return products;
+  }
+
+  createPurchaseOrder(): void {
+    const purchaseOrder: PurchaseOrder = {
+      id: 0,
+      vendorid: this.selectedVendor.id,
+      purchaseOrderDate: '',
+      amount: this.calculateTotal(),
+      lineItems: this.purchaseOrderLineItems,
+    };
+
+    this.purchaseOrderService.create(purchaseOrder).subscribe({
+      next: (purchaseOrder: PurchaseOrder) => {
+        purchaseOrder.id > 0
+          ? (this.msg = `Purchase order ${purchaseOrder.id} created.`)
+          : (this.msg = `Failed to create purchase order (server error).`);
+      },
+      error: (e: Error) =>
+        (this.msg = `Failed to create purchase order: ${e.message}`),
+      complete: () => this.resetGenerator(),
+    });
+  }
+
+  resetGenerator(): void {
+    this.vendorForm.reset();
+    this.productForm.reset();
+    this.quantityForm.reset();
+    this.selectedVendor = Object.assign({}, VENDOR_DEFAULT);
+    this.selectedProduct = Object.assign({}, PRODUCT_DEFAULT);
+    this.vendorProductData = [];
+    this.purchaseOrderLineItems = [];
+    this.selectedQuantity = 1;
+  }
 }
