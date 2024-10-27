@@ -20,7 +20,7 @@ import { PurchaseOrder } from '@app/purchase-order/purchase-order';
 import { PurchaseOrderService } from '@app/purchase-order/purchase-order.service';
 import { PurchaseOrderLineItem } from '@app/purchase-order/purchase-order-line-item';
 
-import { PRODUCT_DEFAULT, VENDOR_DEFAULT } from '@app/constants';
+import { PRODUCT_DEFAULT, VENDOR_DEFAULT, PDF_URL } from '@app/constants';
 
 @Component({
   selector: 'app-generator',
@@ -38,9 +38,9 @@ export class GeneratorComponent implements OnInit, OnDestroy {
   selectedVendor: Vendor = VENDOR_DEFAULT;
   vendorProductData: Product[] = [];
   selectedProduct: Product = PRODUCT_DEFAULT;
-
   purchaseOrderLineItems: PurchaseOrderLineItem[] = [];
   selectedQuantity: number = 1;
+  generatedReportId: number = 0;
 
   vendorForm: FormControl;
   productForm: FormControl;
@@ -90,6 +90,7 @@ export class GeneratorComponent implements OnInit, OnDestroy {
         this.productForm.reset();
         this.quantityForm.reset();
         this.msg = `Choose product for vendor`;
+        this.generatedReportId = 0;
       });
   }
 
@@ -211,6 +212,10 @@ export class GeneratorComponent implements OnInit, OnDestroy {
         purchaseOrder.id > 0
           ? (this.msg = `Purchase order ${purchaseOrder.id} created.`)
           : (this.msg = `Failed to create purchase order (server error).`);
+
+        this.generatedReportId = purchaseOrder.id;
+        console.log(purchaseOrder.id);
+        console.log(this.generatedReportId);
       },
       error: (e: Error) =>
         (this.msg = `Failed to create purchase order: ${e.message}`),
@@ -227,5 +232,9 @@ export class GeneratorComponent implements OnInit, OnDestroy {
     this.vendorProductData = [];
     this.purchaseOrderLineItems = [];
     this.selectedQuantity = 1;
+  }
+
+  viewPdf(): void {
+    window.open(`${PDF_URL}?purchaseorderid=${this.generatedReportId}`);
   }
 }

@@ -177,5 +177,12 @@
         </button>
       </div>
     </form>
+
+    <!-- Report PDF-->
+    <div style="text-align: center" *ngIf="generatedReportId > 0">
+      <button mat-raised-button type="submit" (click)="viewPdf()">
+        View PDF
+      </button>
+    </div>
   </mat-card-content>
 </mat-card>
