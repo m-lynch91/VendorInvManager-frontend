@@ -18,15 +18,16 @@
         </mat-form-field>
       </div>
 
-      <div
-        *ngIf="unselectedVendorProducts().length > 0; else noProducts"
+      <!-- <div
+        *ngIf="vendorProductData.length > 0; else noProducts"
         layout="row"
-      >
+      > -->
+      <div>
         <mat-form-field flex style="width: 100%">
           <mat-label>Product</mat-label>
           <mat-select placeholder="Choose Product" formControlName="product">
             <mat-option
-              *ngFor="let product of unselectedVendorProducts()"
+              *ngFor="let product of vendorProductData"
               [value]="product"
             >
               {{ product.name }}
@@ -64,7 +65,7 @@
       <ng-template #noProducts>
         <div *ngIf="selectedVendor.id !== 0" class="my-primary-text">
           <div
-            *ngIf="unselectedVendorProducts().length === 0; else allSelected"
+            *ngIf="vendorProductData.length === 0; else allSelected"
           >
             No products for {{ selectedVendor.name }}
           </div>

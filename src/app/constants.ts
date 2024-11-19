@@ -1,9 +1,11 @@
 export const BASE_URL: string = 'http://localhost:8080/api';
+// export const BASE_URL: string = `/api`
+export const PDF_URL: string = `${BASE_URL}/purchase-orders/pdf`;
+
 export const API_GET: string = `${BASE_URL}/vendors`;
 export const API_UPDATE: string = `${BASE_URL}/vendors`;
 export const API_ADD: string = `${BASE_URL}/vendors`;
 export const API_DELETE: string = `${BASE_URL}/vendors/`;
-export const PDF_URL: string = `${BASE_URL}/purchase-orders/pdf`;
 
 export const VENDOR_DEFAULT = {
   id: 0,

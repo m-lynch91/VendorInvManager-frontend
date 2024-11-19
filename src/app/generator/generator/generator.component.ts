@@ -235,6 +235,8 @@ export class GeneratorComponent implements OnInit, OnDestroy {
   }
 
   viewPdf(): void {
+    console.log(PDF_URL);
+    console.log(this.generatedReportId);
     window.open(`${PDF_URL}?purchaseorderid=${this.generatedReportId}`);
   }
 }
