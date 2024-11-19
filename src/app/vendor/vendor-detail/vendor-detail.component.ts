@@ -77,7 +77,7 @@ export class VendorDetailComponent implements OnInit {
         this.selectedVendor.province = this.vendorForm.value.province;
         this.selectedVendor.postalCode = this.vendorForm.value.postalCode;
         this.selectedVendor.phone = this.vendorForm.value.phone;
-        this.selectedVendor.postalCode = this.vendorForm.value.postalCode;
+        this.selectedVendor.type = this.vendorForm.value.type;
         this.selectedVendor.email = this.vendorForm.value.email;
         this.saved.emit(this.selectedVendor);
     }
