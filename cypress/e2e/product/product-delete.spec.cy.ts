@@ -5,6 +5,7 @@ describe('product delete test', () => {
     cy.contains('a', 'Products').click();
     cy.contains('D9000').click();
     cy.get('button').contains('Delete').click();
+    cy.get('button').contains('Yes').click();
     cy.contains('deleted.');
     });
    });

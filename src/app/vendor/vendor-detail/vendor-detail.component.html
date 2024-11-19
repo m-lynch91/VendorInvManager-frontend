@@ -46,7 +46,7 @@
             <mat-label>Postal Code</mat-label>
             <mat-error *ngIf="postalCode.errors && (postalCode.dirty || postalCode.touched)">
                 <span *ngIf="postalCode.hasError('required')">Postal Code is required.</span>
-                <span *ngIf="!postalCode.hasError('required') && postalCode.hasError('invalidPostalCode')">Format: 0A0-0A0</span>
+                <span *ngIf="!postalCode.hasError('required') && postalCode.hasError('invalidPostalCode')">Format: A1A-1A1</span>
             </mat-error>
             <input matInput type="postalCode" required formControlName="postalCode" />
         </mat-form-field>

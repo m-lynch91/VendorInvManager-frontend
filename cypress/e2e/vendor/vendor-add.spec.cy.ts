@@ -9,7 +9,7 @@ describe('vendor add test', () => {
 	cy.get('input[formcontrolname=city').click({ force: true }).type('Toronto');
 	cy.get('mat-select[formcontrolname="province"]').click({ force: true });
 	cy.get('mat-option').contains('Ontario').click();
-	cy.get('input[formcontrolname=postalCode').click({ force: true }).type('1A1 A1A');
+	cy.get('input[formcontrolname=postalCode').click({ force: true }).type('A1A-1A1');
 	cy.get('input[formcontrolname=phone').click({ force: true }).type('(111)111-1111');
 	cy.get('input[formcontrolname=type').click({ force: true }).type('Trusted');
 	cy.get('input[formcontrolname=email').click({ force: true }).type('vm@here.com');

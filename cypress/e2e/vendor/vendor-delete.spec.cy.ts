@@ -5,6 +5,7 @@ describe('vendor delete test', () => {
     cy.contains('a', 'Vendors').click();
     cy.contains('Vendy').click();
     cy.get('button').contains('Delete').click();
+    cy.get('button').contains('Yes').click();
     cy.contains('deleted.');
     });
    });
