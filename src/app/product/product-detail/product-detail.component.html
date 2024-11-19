@@ -174,7 +174,7 @@
 	
 	<span>
 		<button *ngIf="selectedProduct.id"  mat-raised-button type="button"
-				(click)="deleteProduct(selectedProduct)">Delete</button>
+				(click)="openDeletedialog()">Delete</button>
 	</span>
 	<span>
 	<button mat-raised-button type="button" (click)="cancelled.emit(selectedProduct)">
