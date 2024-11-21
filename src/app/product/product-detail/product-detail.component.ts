@@ -41,7 +41,7 @@ export class ProductDetailComponent implements OnInit {
 	quantityonhand: FormControl;
 	quantityonorder: FormControl;
 	// qrcode: FormControl;
-	// qrcodetext: FormControl;
+	qrcodetext: FormControl;
 
 	productForm: FormGroup;
 
@@ -56,7 +56,7 @@ export class ProductDetailComponent implements OnInit {
 		this.quantityonhand = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
 		this.quantityonorder = new FormControl('', Validators.compose([Validators.required, ValidateInt]));
 		// this.qrcode = new FormControl('', Validators.compose([Validators.required]));
-		// this.qrcodetext = new FormControl('', Validators.compose([Validators.required]));
+		this.qrcodetext = new FormControl('', Validators.compose([Validators.required]));
 
 		this.productForm = this.builder.group({
 			id: this.id,
@@ -69,7 +69,7 @@ export class ProductDetailComponent implements OnInit {
 			quantityonhand: this.quantityonhand,
 			quantityonorder: this.quantityonorder,
 			// qrcode: this.qrcode,
-			// qrcodetext: this.qrcodetext,
+			qrcodetext: this.qrcodetext,
 		});
 	}
 
@@ -85,7 +85,7 @@ export class ProductDetailComponent implements OnInit {
 			quantityonhand: this.selectedProduct.quantityonhand,
 			quantityonorder: this.selectedProduct.quantityonorder,
 			// qrcode: this.selectedProduct.qrcode,
-			// qrcodetext: this.selectedProduct.qrcodetext,
+			qrcodetext: this.selectedProduct.qrcodetext,
 		});
 	}
 
@@ -99,8 +99,8 @@ export class ProductDetailComponent implements OnInit {
 		this.selectedProduct.economicorderquantity = this.productForm.value.economicorderquantity;
 		this.selectedProduct.quantityonhand = this.productForm.value.quantityonhand;
 		this.selectedProduct.quantityonorder = this.productForm.value.quantityonorder;
-		// this.selectedProduct.qrcode = this.productForm.value.qrcode;
-		// this.selectedProduct.qrcodetext = this.productForm.value.qrcodetext;
+		this.selectedProduct.qrcode = this.productForm.value.qrcode;
+		this.selectedProduct.qrcodetext = this.productForm.value.qrcodetext;
 		this.saved.emit(this.selectedProduct);
 	}
 
