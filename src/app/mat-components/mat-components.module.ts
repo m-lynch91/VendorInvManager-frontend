@@ -20,6 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const MaterialComponents = [MatButtonModule,
 	MatCardModule,
@@ -38,7 +39,8 @@ const MaterialComponents = [MatButtonModule,
 	MatExpansionModule,
 	MatAccordion,
 	MatCheckboxModule,
-	MatDialogModule
+	MatDialogModule,
+	MatPaginatorModule
 ];
 
 @NgModule({

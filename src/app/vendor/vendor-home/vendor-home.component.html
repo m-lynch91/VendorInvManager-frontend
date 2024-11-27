@@ -1,4 +1,4 @@
-<mat-card *ngIf="inDetail">
+<mat-card *ngIf="loadForm">
     <mat-card-header>
         <mat-card-title>
             <span class="my-primary-text">{{ msg }}</span>
@@ -13,14 +13,14 @@
     </mat-card-content>
 </mat-card>
 
-<div class="pad5" *ngIf="!inDetail">
+<div class="pad5" *ngIf="!loadForm">
     <mat-icon (click)="newVendorInDetail()" matTooltip="Add New Vendor" class="addicon" color="primary">
         control_point
     </mat-icon>
 </div>
 
 
-<mat-card *ngIf="!inDetail">
+<mat-card *ngIf="!loadForm">
         <mat-card-content *ngIf="vendorData$ | async as vends; else loading">
             <mat-card-header class="app-accent" layout="row">
                 <mat-card-title>

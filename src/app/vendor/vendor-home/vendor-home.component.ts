@@ -18,14 +18,12 @@ export class VendorHomeComponent implements OnInit {
 
 	vendorData$?: Observable<Vendor[]>;
 	vendorInDetail: Vendor;
-	inDetail: boolean;
-	loaded: boolean;
+	loadForm: boolean;
 
 	constructor(public vendorService: VendorService) {
 		this.msg = '';
 		this.vendorInDetail = VENDOR_DEFAULT;
-		this.inDetail = false;
-		this.loaded = false;
+		this.loadForm = false;
 	}
 
 	ngOnInit(): void {
@@ -36,13 +34,13 @@ export class VendorHomeComponent implements OnInit {
 	onSelect(vendor: Vendor): void {
 		this.vendorInDetail = vendor;
 		this.msg = `${vendor.name} selected`;
-		this.inDetail = true;
+		this.loadForm = true;
 	}
 
 	// event handler for cancel button
 	onCancel(): void {
 		this.msg = 'Operation cancelled';
-		this.inDetail = false;
+		this.loadForm = false;
 	}
 
 	// send vendor to service for deletion
@@ -52,7 +50,7 @@ export class VendorHomeComponent implements OnInit {
 				? (this.msg = `Vendor ${vendor.name} deleted.`)
 				: (this.msg = `Vendor not deleted.`),
 			error: (err: Error) => this.msg = `Delete failed: ${err.message}`,
-			complete: () => this.inDetail = false,
+			complete: () => this.loadForm = false,
 		});
 	}
 
@@ -69,7 +67,7 @@ export class VendorHomeComponent implements OnInit {
 				this.msg = `Vendor ${newVendor.id} added.`;
 			},
 			error: (err: Error) => { this.msg = `Vendor not added: ${err.message}` },
-			complete: () => this.inDetail = false,
+			complete: () => this.loadForm = false,
 		});
 	}
 
@@ -80,7 +78,7 @@ export class VendorHomeComponent implements OnInit {
 			// create observable
 			next: (updatedVendor: Vendor) => (this.msg = `Vendor ${updatedVendor.id} updated.`),
 			error: (err: Error) => (this.msg = `Update failed. - ${err.message}`),
-			complete: () => (this.inDetail = false),
+			complete: () => (this.loadForm = false),
 		})
 	}
 
@@ -96,7 +94,7 @@ export class VendorHomeComponent implements OnInit {
 
 	newVendorInDetail(): void {
 		this.vendorInDetail = VENDOR_DEFAULT;
-		this.inDetail = true;
+		this.loadForm = true;
 		this.msg = `New Vendor`;
 	}
 

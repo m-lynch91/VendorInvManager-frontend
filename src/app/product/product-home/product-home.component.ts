@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 // project imports
 import { MatComponentsModule } from '@app/mat-components/mat-components.module';
@@ -27,6 +28,11 @@ export class ProductHomeComponent implements OnInit {
 	dataSource: MatTableDataSource<Product> = new MatTableDataSource<Product>();
 	vendorData: Vendor[] = [];
 	productInDetail: Product = PRODUCT_DEFAULT;
+
+	pageSize = 5; 
+	@ViewChild(MatPaginator, { static: false }) set matPaginator(paginator: MatPaginator) { 
+	this.dataSource.paginator = paginator; 
+	} 
 
 	constructor(public productService: ProductService, public vendorService: VendorService) { }
 

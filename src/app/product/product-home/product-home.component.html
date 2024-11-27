@@ -69,6 +69,9 @@
   </mat-card-content>
 </mat-card>
 
+<mat-paginator #paginator *ngIf="!showDetails" style="margin-top:2vh"[pageSize]="pageSize"> 
+</mat-paginator> 
+
 <div class="padtop15" *ngIf="!showDetails">
   <mat-icon
     (click)="startNewProduct()"
