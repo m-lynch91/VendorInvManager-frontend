@@ -32,3 +32,11 @@ export const PRODUCT_DEFAULT = {
   qrcode: [],
   qrcodetext: '',
 };
+
+export const PURCHASE_ORDER_DEFAULT = {
+  id: 0,
+  vendorid: 0,
+  amount: 0,
+  purchaseOrderDate: '',
+  lineItems: []
+}

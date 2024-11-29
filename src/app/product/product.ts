@@ -10,5 +10,4 @@ export interface Product {
     quantityonorder: number;
     qrcode: number[];
     qrcodetext: string;
-   }
-   
+}
