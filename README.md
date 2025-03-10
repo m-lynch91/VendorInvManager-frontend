@@ -1,4 +1,9 @@
-# INFO5059Clientcasestudy
+This repository hosts the front-end for a Vendor Inventory Management web application.
+
+The front-end is implemented using AngularJS. 
+
+
+# VendorInvManager-frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.4.
 
