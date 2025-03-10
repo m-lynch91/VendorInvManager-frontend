@@ -1,6 +1,11 @@
 This repository hosts the front-end for a Vendor Inventory Management web application.
 
-The front-end is implemented using AngularJS. 
+The front-end was implemented using AngularJS and Material-UI for styling. Cypress was used for end-to-end testing. 
+Features that were implemented:
+- PDF report generation
+- QR Code Generator
+- Client-side pagination
+- Basic CRUD funtionality to interact with back-end REST API
 
 
 # VendorInvManager-frontend
